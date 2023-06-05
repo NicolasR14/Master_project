@@ -4,4 +4,6 @@ Archive.zip
 autoencoder+kmean+tsne example.ipynb
 videos.txt
 __pycache__
-generate_changement
+generate_alteration
+ANSYS_simulation/simulation_files
+images
