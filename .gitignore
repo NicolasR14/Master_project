@@ -7,3 +7,4 @@ __pycache__
 generate_alteration
 ANSYS_simulation/simulation_files
 images
+unique_image_supervised/vgg16_model.h5
