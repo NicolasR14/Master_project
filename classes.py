@@ -66,26 +66,3 @@ class DataGenerator(keras.utils.Sequence):
         return X,X
         # , keras.utils.to_categorical(y, num_classes=self.n_classes)
 
-def extract_HSV_features(path,height,width,ids):
-    features = []
-    for ID in ids:
-        roi = cv2.imread(f'{path}{ID}.jpg')
-        img_resized = cv2.resize(roi, (height,width))
-        img = cv2.cvtColor(img_resized, cv2.COLOR_BGR2HSV)
-        H_val,S_val,V_val = img[:,:,0],img[:,:,1],img[:,:,2]
-        # Extract the mean values of hue, saturation, and value
-        H_mean = np.mean(H_val)
-        S_mean = np.mean(S_val)
-        V_mean = np.mean(V_val)
-        # Extract the standard deviation of hue, saturation, and value
-        H_std = np.std(H_val)
-        S_std = np.std(S_val)
-        V_std = np.std(V_val)
-        # Extract the contrast values of hue, saturation, and value
-        # H_max,S_max,V_max = np.max(H_val),np.max(S_val),np.max(V_val)
-        # H_min,S_min,V_min = np.min(H_val),np.min(S_val),np.min(V_val)
-        # H_contrast = (H_max - H_min) / (H_max + H_min)
-        # S_contrast = (S_max - S_min) / (S_max + S_min)
-        # V_contrast = (V_max - V_min) / (V_max + V_min)
-        features.append([H_mean,H_std,S_mean,S_std,V_mean,V_std])
-    return pd.DataFrame(features,columns=['H_mean','H_std','S_mean','S_std','V_mean','V_std'])
