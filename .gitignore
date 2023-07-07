@@ -9,3 +9,5 @@ ANSYS_simulation/simulation_files
 images
 unique_image_supervised/vgg16_model.h5
 unique_image_supervised/history
+rapport
+data
