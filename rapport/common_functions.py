@@ -8,6 +8,34 @@ import matplotlib.pyplot as plt
 # from ROI_extraction import preprocess_image
 import cv2
 import os
+
+def image_data_generation(dataset_path,params):
+    ids = []
+    labels = {}
+    classes = {'excess':1,'normal':0,'insufficient':-1}
+    for class_name in os.listdir(dataset_path):
+        class_path = os.path.join(dataset_path, class_name)
+        if os.path.isdir(class_path):
+            for filename in os.listdir(class_path) :
+                if filename.endswith((".jpg", ".jpeg", ".png")):
+                    img_path = os.path.join(class_path, filename) 
+                    ids.append(img_path)
+                    labels[img_path]=classes[class_name]
+    X = []
+    y = np.empty((len(ids)), dtype=int)
+    for i, ID in enumerate(ids):
+        image = cv2.imread(ID)
+        # print(image.shape==(params['dim'][0], params['dim'][1],params['n_channels']))
+        if image.shape != (params['dim'][0], params['dim'][1],params['n_channels']):
+            image = cv2.resize(image,(params['dim'][0], params['dim'][1]))
+        X.append(image)
+        y[i] = labels[ID]
+    X = np.reshape(X,(len(ids),params['dim'][0], params['dim'][1],params['n_channels']))
+    X = X.astype("float32") / 255.0
+
+    return X, keras.utils.to_categorical(y, num_classes=params['n_classes']),y
+
+
 def HSV_features_generation(dataset_path):
     ids = []
     labels = {}
