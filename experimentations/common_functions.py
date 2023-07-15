@@ -1,15 +1,11 @@
 import os
-import random
 import numpy as np
 import pandas as pd
-import tensorflow as tf
 from tensorflow import keras
-import matplotlib.pyplot as plt
-# from ROI_extraction import preprocess_image
 import cv2
 import os
 
-def image_data_generation(dataset_path,params):
+def image_data_generation(dataset_path,params): #to generate image dataset and labels
     ids = []
     labels = {}
     classes = {'excess':1,'normal':0,'insufficient':-1}
@@ -25,8 +21,7 @@ def image_data_generation(dataset_path,params):
     y = np.empty((len(ids)), dtype=int)
     for i, ID in enumerate(ids):
         image = cv2.imread(ID)
-        # print(image.shape==(params['dim'][0], params['dim'][1],params['n_channels']))
-        if image.shape != (params['dim'][0], params['dim'][1],params['n_channels']):
+        if image.shape != (params['dim'][0], params['dim'][1],params['n_channels']): #Resize image
             image = cv2.resize(image,(params['dim'][0], params['dim'][1]))
         X.append(image)
         y[i] = labels[ID]
@@ -36,7 +31,7 @@ def image_data_generation(dataset_path,params):
     return X, keras.utils.to_categorical(y, num_classes=params['n_classes']),y
 
 
-def HSV_features_generation(dataset_path):
+def HSV_features_generation(dataset_path): #to generate HSV features dataset and labels
     ids = []
     labels = {}
     classes = {'excess':1,'normal':0,'insufficient':2}
@@ -48,8 +43,6 @@ def HSV_features_generation(dataset_path):
                     img_path = os.path.join(class_path, filename) 
                     ids.append(img_path)
                     labels[img_path]=classes[class_name]
-
-    params = {'n_classes': 3}
 
     y = np.empty((len(ids)), dtype=int)
     X = []
